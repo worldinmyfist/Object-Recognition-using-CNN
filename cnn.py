@@ -8,7 +8,7 @@ for i in range(20):
     # Initialising the CNN
     classifier = Sequential()
     # Convolution
-    classifier.add(Conv2D(32, (3, 3), input_shape = (64, 64, 3), activation = 'relu'))
+    classifier.add(Conv2D(32, (3, 3), input_shape = (64, 64, 3), activation = 'relu')) #(64,64,3) is (pixel,pixel,3), it can be manually altered
     # Pooling
     classifier.add(MaxPooling2D(pool_size = (2, 2)))
     # Adding a second convolutional layer
@@ -27,22 +27,22 @@ for i in range(20):
             zoom_range = 0.2,
             horizontal_flip = True)
     test_datagen = ImageDataGenerator(rescale = 1./255)
-    training_set = train_datagen.flow_from_directory('dataset/training_set',
+    training_set = train_datagen.flow_from_directory('dataset/training_set',#make a folder dataset containing training images in training_set folder
             target_size = (64, 64),
             batch_size = 32,
             class_mode = 'categorical')
-    test_set = test_datagen.flow_from_directory('dataset/test_set',
+    test_set = test_datagen.flow_from_directory('dataset/test_set',#add your test cases in dataset folder in test_set
             target_size = (64, 64),
             batch_size = 32,
             class_mode = 'categorical')
     classifier.fit_generator(training_set,
             steps_per_epoch = 64,
-            epochs = 2,
+            epochs = 2,#can be increased for accuracy but compilation time increases
             validation_data = test_set,
             validation_steps = 2000)
     # Making new predictions
     item0, item1 = 0, 0
-    for i in range(150):
+    for i in range(150):#number of test images : 150
         x = 'dataset/test_set/Item-0/img' + str(i + 1) + '.jpg'
         test_image = image.load_img(x, target_size = (64, 64))
         test_image = image.img_to_array(test_image)
